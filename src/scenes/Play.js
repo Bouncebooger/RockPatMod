@@ -71,7 +71,7 @@ this.gameOver = false;
 scoreConfig.fixedWidth = 0;
 this.clock = this.time.delayedCall(game.settings.gameTimer, () =>{
    this.add.text(game.config.width/2,game.config.height/2,'I AM FREE \n Iam free \n II Mm fre e',scoreConfig).setOrigin(0.5);
-   this.add.text(game.config.width/2,game.config.height/2 +64,'(R) GET HIM GET HIM GET HIM GET HIM GET HIM GET HIM',
+   this.add.text(game.config.width/2,game.config.height/2 +64,'(R) GET HIM GET HIM GET',
    scoreConfig).setOrigin(0.5);
    this.gameOver = true;
 }, null, this);

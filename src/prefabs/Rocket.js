@@ -1,7 +1,7 @@
 class Rocket extends Phaser.GameObjects.Sprite {
 constructor(scene,x,y,texture,frame,player){
     super(scene,x,y,texture,frame,player);
-    //console.log(player, "fucking hell");
+
     scene.add.existing(this);
     this.isFiring = false;
     this.isFiring2 = false;
@@ -12,7 +12,7 @@ constructor(scene,x,y,texture,frame,player){
    // p1shots;
 }
 update(){
-    //console.log(this.pllly, "player");
+  
  if(this.pllly == 'p2'){
      console.log(this.x);
          if(!this.isFiring2){
@@ -46,7 +46,7 @@ update(){
       
  }   
     if(this.pllly == 'p1'){
-       // console.log(this.y,"p1");
+
 if(!this.isFiring){
     if(keyLEFT.isDown && this.x >= borderUISize + this.width){
         this.x -= this.moveSpeed;
@@ -79,9 +79,7 @@ if (this.y <= borderUISize * 3 + borderPadding){
     
   
     }
-//if(Phaser.Input.Keyboard.JustDown(keyG)){
 
-//}
 
 
     
