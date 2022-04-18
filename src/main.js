@@ -8,7 +8,9 @@ let game = new Phaser.Game(config);
 //let keyF,keyR,keyLEFT,keyRIGHT;
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize /3 ;
-let keyF,keyR,keyLEFT,keyRIGHT;
+let keyDOWN,keyUP,keyLEFT,keyRIGHT;
+let player;
+let keyW,keyS,keyD,keyA,keyR;
 //two player
 //weapons
 
