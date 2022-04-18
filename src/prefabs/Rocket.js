@@ -46,7 +46,7 @@ update(){
       
  }   
     if(this.pllly == 'p1'){
-        console.log(this.y,"p1");
+       // console.log(this.y,"p1");
 if(!this.isFiring){
     if(keyLEFT.isDown && this.x >= borderUISize + this.width){
         this.x -= this.moveSpeed;

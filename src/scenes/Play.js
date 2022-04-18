@@ -4,20 +4,24 @@ class Play extends Phaser.Scene {
     }
 
 preload() {
-    this.load.image('rocket','./Assets/slog.png');
+    this.load.spritesheet('rocket','./Assets/slog-sheet.png',{frameWidth: 16, frameHeight: 8, startFrame: 0, endFrame:1});
     this.load.image('spaceship','./Assets/spaceship.png');
     this.load.image('starfield','./Assets/starfield.png');
     this.load.image('stungun','./Assets/stungun.png');
+    this.load.image('faces','./Assets/faces.png');
+    this.load.image('bar','./Assets/otherthing.png');
+    this.load.image('bords','./Assets/border.png');
     this.load.spritesheet('explosion','./assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
 }
 
 create() {
 this.starfield = this.add.tileSprite(0,0,640,480,'starfield').setOrigin(0,0);
-this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2,0x00FF00).setOrigin(0,0);
-this.add.rectangle(0,0,game.config.width,borderUISize,0xFFFFFF).setOrigin(0,0);
-this.add.rectangle(0, game.config.height - borderUISize,game.config.width,borderUISize,0xFFFFFF).setOrigin(0,0);
-this.add.rectangle(0,0,borderUISize,game.config.height, 0XFFFFFF).setOrigin(0,0);
-this.add.rectangle(game.config.width - borderUISize, 0,borderUISize,game.config.height,0xFFFFFF).setOrigin(0,0);
+this.faced = this.add.tileSprite(0,0,640,480,'faces').setOrigin(0,0);
+this.blops1 = this.add.tileSprite(0, borderUISize + borderPadding, game.config.width, borderUISize * 2,'bar').setOrigin(0,0);
+this.blops2 =this.add.tileSprite(0,0,game.config.width,borderUISize,'bords').setOrigin(0,0);
+this.blops3 =this.add.tileSprite(0, game.config.height - borderUISize,game.config.width,borderUISize,'bords').setOrigin(0,0);
+ this.blops4= this.add.tileSprite(0,0,borderUISize,game.config.height, 'bords').setOrigin(0,0);
+this.blops5 =this.add.tileSprite(game.config.width - borderUISize, 0,borderUISize,game.config.height,'bords').setOrigin(0,0);
 //this.p1Rocket = new Rocket(this,game.config.width/2,game.config.height - borderUISize - borderPadding, keyLEFT,keyRIGHT,keyF, 'rocket').setOrigin(0.5,0);
 keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -29,12 +33,12 @@ keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
-this.p1Rocket = new Rocket(this,game.config.width/2,game.config.height - borderUISize - borderPadding,'slog',0,'p1').setOrigin(0.5,0);
+this.p1Rocket = new Rocket(this,game.config.width/2,game.config.height - borderUISize - borderPadding,'rocket',0,'p1').setOrigin(0.5,0);
 if(game.settings.plyrCnt == 2 ){
 
 
 
-this.p2Rocket = new Rocket(this,game.config.width/2,game.config.height - borderUISize - borderPadding,'slog',0,'p2').setOrigin(0.5,0);
+this.p2Rocket = new Rocket(this,game.config.width/2,game.config.height - borderUISize - borderPadding,'rocket',0,'p2').setOrigin(0.5,0);
 }
 this.ship01 = new Spaceship(this,game.config.width + borderUISize*6,borderUISize*4,'spaceship',0,30).setOrigin(0,0);
 this.ship02 = new Spaceship(this,game.config.width + borderUISize*3,borderUISize*5 + borderPadding*2, 'spaceship', 0,20).setOrigin(0,0);
@@ -48,9 +52,9 @@ this.anims.create({
 });
 this.p1Score = 0 ;
 let scoreConfig = {
-    fontFamily: 'Courier',
+    fontFamily: 'Tahoma',
     fontSize: '28px',
-    backgroundColor: '#F3B141',
+    backgroundColor: '#FF0000',
     color: '#843605',
     align: 'right',
     padding: {
@@ -66,8 +70,8 @@ this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize +borde
 this.gameOver = false;
 scoreConfig.fixedWidth = 0;
 this.clock = this.time.delayedCall(game.settings.gameTimer, () =>{
-   this.add.text(game.config.width/2,game.config.height/2,'GAME OVER',scoreConfig).setOrigin(0.5);
-   this.add.text(game.config.width/2,game.config.height/2 +64,'Press (R) to Restart or <- for Menu',
+   this.add.text(game.config.width/2,game.config.height/2,'I AM FREE \n Iam free \n II Mm fre e',scoreConfig).setOrigin(0.5);
+   this.add.text(game.config.width/2,game.config.height/2 +64,'(R) GET HIM GET HIM GET HIM GET HIM GET HIM GET HIM',
    scoreConfig).setOrigin(0.5);
    this.gameOver = true;
 }, null, this);
@@ -82,6 +86,7 @@ update() {
         this.scene.start("menuScene");
     }
     this.starfield.tilePositionX -= 4;
+    this.faced.tilePositionX -= 2;
     if(!this.gameOver){
     if(game.settings.plyrCnt == 2){
     this.p2Rocket.update();
@@ -104,7 +109,20 @@ update() {
         this.p1Rocket.reset();
         this.shipExplode(this.ship01);
     }
-    
+    if(game.settings.plyrCnt == 2){
+    if (this.checkCollision(this.p2Rocket,this.ship03)){
+        this.shipExplode(this.ship03); 
+        this.p2Rocket.reset();
+    }
+    if(this.checkCollision(this.p2Rocket,this.ship02)){
+        this.shipExplode(this.ship02);
+        this.p2Rocket.reset();
+    }
+    if(this.checkCollision(this.p2Rocket, this.ship01)) {
+        this.p2Rocket.reset();
+        this.shipExplode(this.ship01);
+    }
+}
 }
 
 checkCollision(rocket,ship){ 
